@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 Grab a free machine from beaker
 ===============================
