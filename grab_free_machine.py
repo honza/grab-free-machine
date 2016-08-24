@@ -86,7 +86,7 @@ FILTER = """
 
 
 def timestamp():
-    return datetime.now().strftime('%Y%m%d-%H%M%S')
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
 def log(message):
