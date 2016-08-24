@@ -26,16 +26,27 @@ get to the machine fast enough, and someone else has already grabbed it.  When
 you see a status of "In progress" or "Running", you won the lottery.  You
 should then cancel the other jobs.
 """
+import sys
 from subprocess import check_output, CalledProcessError
 from datetime import datetime
 from time import sleep
+
+DISTRO = {
+    'rhel': """
+          <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+          <distro_variant op="=" value="Server"/>
+          <distro_name op="=" value="RHEL-7.2"/>
+    """,
+    'centos': '<distro_family op="=" value="CentOS-7"/>'
+}
 
 
 JOB_TEMPLATE = """
 <job retention_tag="scratch">
   <whiteboard></whiteboard>
   <recipeSet priority="High">
-    <recipe whiteboard="" role="RECIPE_MEMBERS" ks_meta="" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="" role="RECIPE_MEMBERS" ks_meta="" kernel_options=""
+            kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="ignore"/>
       <packages/>
@@ -43,7 +54,7 @@ JOB_TEMPLATE = """
       <repos/>
       <distroRequires>
         <and>
-          <distro_name op="=" value="CentOS-7"/>
+          {distro}
           <distro_arch op="=" value="x86_64"/>
         </and>
       </distroRequires>
@@ -80,9 +91,9 @@ def log(message):
     print '[{}] {}'.format(timestamp(), message)
 
 
-def job(host):
+def job(host, distro):
     log('Processing job for host {}'.format(host))
-    return JOB_TEMPLATE.format(host=host)
+    return JOB_TEMPLATE.format(host=host, distro=distro)
 
 
 def job_filename():
@@ -117,14 +128,26 @@ def bkr_command():
 def find_free():
     log('Checking for free machines...')
     try:
-       output = check_output(bkr_command())
-       return output.split('\n')
+        output = check_output(bkr_command())
+        return output.split('\n')
     except CalledProcessError:
         return
 
 
-def main():
+def validate_distro(distro):
+    xml = DISTRO.get(distro)
+
+    if not xml:
+        print 'Wrong distro. Choices: RHEL or CentOs'
+        sys.exit(1)
+
+    return xml
+
+
+def main(distro):
     submitted_jobs = 0
+
+    distro = validate_distro(distro)
 
     while True:
         machines = find_free()
@@ -141,11 +164,16 @@ def main():
             if submitted_jobs == 3:
                 break
 
-            submit_job(job(machine))
+            submit_job(job(machine, distro))
             submitted_jobs += 1
 
         break
 
 
 if __name__ == '__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('distro', help='rhel or centos')
+    args = parser.parse_args()
+
+    main(args.distro.lower())
