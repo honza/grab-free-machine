@@ -122,10 +122,11 @@ def job_filename():
 
 def submit_job(xml):
     filename = job_filename()
-    with open(filename, 'w') as f:
-        f.write(xml)
 
-    log('Submitting job in file {}'.format(filename))
+    log('Submitting job')
+
+    if VERBOSE:
+        log(xml)
 
     try:
         check_output(['bkr', 'job-submit', filename])
@@ -194,6 +195,11 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('distro', help='rhel or centos')
+    parser.add_argument('-v, --verbose', action='store_true',
+                        dest='verbose', help='verbose')
     args = parser.parse_args()
+
+    global VERBOSE
+    VERBOSE = args.verbose
 
     main(args.distro.lower())
