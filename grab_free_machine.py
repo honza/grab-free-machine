@@ -57,7 +57,7 @@ DISTRO = {
           <distro_variant op="=" value="Server"/>
           <distro_name op="=" value="RHEL-7.2"/>
     """,
-    'centos': '<distro_family op="=" value="CentOS-7"/>'
+    'centos': '<distro_name op="=" value="CentOS-7"/>'
 }
 
 
