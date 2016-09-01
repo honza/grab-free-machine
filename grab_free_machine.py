@@ -123,6 +123,9 @@ def job_filename():
 def submit_job(xml):
     filename = job_filename()
 
+    with open(filename, 'w') as f:
+        f.write(xml)
+
     log('Submitting job')
 
     if VERBOSE:
