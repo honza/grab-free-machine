@@ -26,13 +26,17 @@ should then cancel the other jobs.
 
 
 ```
-usage: grab_free_machine.py [-h] distro
+usage: grab_free_machine.py [-h] [-a ATTEMPTS] [-v, --verbose] distro
 
 positional arguments:
-  distro      rhel or centos
+  distro                rhel, rhel-73, or centos
 
 optional arguments:
-  -h, --help  show this help message and exit
+  -h, --help            show this help message and exit
+  -a ATTEMPTS, --attempts ATTEMPTS
+                        How many free machines at most should we try to
+                        acquire?
+  -v, --verbose         verbose
 ```
 
 ## License
