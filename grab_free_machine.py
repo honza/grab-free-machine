@@ -38,8 +38,6 @@ We're looking for a machine:
 * > 120GB disk
 * not virtualized
 
-The recipe will install RHEL 7.2 on the newly acquired machine.
-
 You should run this a few times.  In the "My jobs" section of the web UI, you
 will see a bunch of jobs with a status of "Queued".  That means that you didn't
 get to the machine fast enough, and someone else has already grabbed it.  When
@@ -52,11 +50,8 @@ from datetime import datetime
 from time import sleep
 
 DISTRO = {
-    'rhel': """
-          <distro_family op="=" value="RedHatEnterpriseLinux7"/>
-          <distro_variant op="=" value="Server"/>
-          <distro_name op="=" value="RHEL-7.2"/>
-    """,
+    'rhel': '<distro_name op="=" value="RHEL-7.2"/>',
+    'rhel-73': '<distro_name op="=" value="RHEL-7.3-20161005.0"/>',
     'centos': '<distro_name op="=" value="CentOS-7"/>'
 }
 
@@ -199,7 +194,7 @@ def main(distro):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('distro', help='rhel or centos')
+    parser.add_argument('distro', help='rhel, rhel-73, or centos')
     parser.add_argument('-v, --verbose', action='store_true',
                         dest='verbose', help='verbose')
     args = parser.parse_args()
