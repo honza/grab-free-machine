@@ -104,7 +104,7 @@ FILTER = """
 
 
 def timestamp():
-    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
 
 def log(message):
@@ -181,11 +181,13 @@ def main(distro):
             sleep(30)
             continue
 
+        log('Found {} free machines'.format(len(machines)))
+
         for machine in machines:
             if not machine:
                 continue
 
-            if submitted_jobs == 3:
+            if submitted_jobs == 5:
                 break
 
             submit_job(job(machine, distro))
