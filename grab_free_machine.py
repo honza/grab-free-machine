@@ -163,7 +163,7 @@ def validate_distro(distro):
     return xml
 
 
-def main(distro):
+def main(distro, attempts):
     submitted_jobs = 0
 
     distro = validate_distro(distro)
@@ -182,7 +182,7 @@ def main(distro):
             if not machine:
                 continue
 
-            if submitted_jobs == 5:
+            if submitted_jobs == attempts:
                 break
 
             submit_job(job(machine, distro))
@@ -195,6 +195,9 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('distro', help='rhel, rhel-73, or centos')
+    parser.add_argument('-a', '--attempts', type=int, default=1,
+                        help=('How many free machines at most '
+                              'should we try to acquire?'))
     parser.add_argument('-v, --verbose', action='store_true',
                         dest='verbose', help='verbose')
     args = parser.parse_args()
@@ -202,4 +205,4 @@ if __name__ == '__main__':
     global VERBOSE
     VERBOSE = args.verbose
 
-    main(args.distro.lower())
+    main(args.distro.lower(), args.attempts)
