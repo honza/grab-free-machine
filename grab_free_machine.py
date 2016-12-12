@@ -33,7 +33,7 @@ The machine criteria are spread between the ``FILTER`` and the ``bkr_command``.
 We're looking for a machine:
 
 * > 3 CPUs
-* > 11GB of RAM
+* > 32GB of RAM
 * x86_64
 * > 120GB disk
 * not virtualized
@@ -90,7 +90,7 @@ FILTER = """
 <hostRequires>
   <and>
     <key_value key="PROCESSORS" op=">" value="3"/>
-    <memory op=">" value="11000" />
+    <memory op=">" value="32000" />
     <key_value key="DISKSPACE" op=">" value="120000" />
     <hypervisor op="=" value="" />
   </and>
