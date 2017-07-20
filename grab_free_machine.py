@@ -50,8 +50,9 @@ from datetime import datetime
 from time import sleep
 
 DISTRO = {
-    'rhel': '<distro_name op="=" value="RHEL-7.2"/>',
+    'rhel-72': '<distro_name op="=" value="RHEL-7.2"/>',
     'rhel-73': '<distro_name op="=" value="RHEL-7.3-20161005.0"/>',
+    'rhel-74': '<distro_name op="=" value="RHEL-7.4-20170711.0"/>',
     'centos': '<distro_name op="=" value="CentOS-7"/>'
 }
 
@@ -163,6 +164,10 @@ def validate_distro(distro):
     return xml
 
 
+def get_available_distros_as_human_string():
+    return ', '.join(DISTRO.keys())
+
+
 def main(distro, attempts):
     submitted_jobs = 0
 
@@ -194,7 +199,7 @@ def main(distro, attempts):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('distro', help='rhel, rhel-73, or centos')
+    parser.add_argument('distro', help=get_available_distros_as_human_string())
     parser.add_argument('-a', '--attempts', type=int, default=1,
                         help=('How many free machines at most '
                               'should we try to acquire?'))
