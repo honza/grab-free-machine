@@ -72,6 +72,7 @@ JOB_TEMPLATE = """
         <and>
           {distro}
           <distro_arch op="=" value="x86_64"/>
+          <distro_variant op="=" value="Server"/>
         </and>
       </distroRequires>
       <hostRequires force="{host}"/>
