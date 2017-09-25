@@ -29,7 +29,7 @@ should then cancel the other jobs.
 usage: grab_free_machine.py [-h] [-a ATTEMPTS] [-v, --verbose] distro
 
 positional arguments:
-  distro                rhel-72, rhel-73, rhel-74, centos
+  distro                rhel-latest, rhel-72, rhel-73, rhel-74, centos
 
 optional arguments:
   -h, --help            show this help message and exit
