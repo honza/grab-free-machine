@@ -8,10 +8,10 @@ aren't any machines, the script will wait 30 seconds and try again.
 
 We're looking for a machine:
 
-* > 3 CPUs
-* > 32GB of RAM
+* 3 or more CPUs
+* 32GB or more of RAM
 * x86_64
-* > 120GB disk
+* 120GB or larger disk
 * not virtualized
 
 The recipe will install either RHEL 7.2, RHEL 7.3, RHEL 7.4 or CentOS on the
@@ -24,7 +24,6 @@ you see a status of "In progress" or "Running", you won the lottery.  You
 should then cancel the other jobs.
 
 ## Usage
-
 
 ```
 usage: grab_free_machine.py [-h] [-a ATTEMPTS] [-v, --verbose] distro
