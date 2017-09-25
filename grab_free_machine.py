@@ -211,4 +211,7 @@ if __name__ == '__main__':
     global VERBOSE
     VERBOSE = args.verbose
 
-    main(args.distro.lower(), args.attempts)
+    try:
+        main(args.distro.lower(), args.attempts)
+    except KeyboardInterrupt:
+        log('Aborted.')
