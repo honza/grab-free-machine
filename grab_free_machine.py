@@ -53,6 +53,7 @@ DISTRO = {
     'rhel-72': '<distro_name op="=" value="RHEL-7.2"/>',
     'rhel-73': '<distro_name op="=" value="RHEL-7.3-20161005.0"/>',
     'rhel-74': '<distro_name op="=" value="RHEL-7.4-20170711.0"/>',
+    'rhel-latest': '<distro_name op="=" value="RHEL-7.4-20170711.0"/>',
     'centos': '<distro_name op="=" value="CentOS-7"/>'
 }
 
