@@ -62,8 +62,8 @@ JOB_TEMPLATE = """
 <job retention_tag="scratch">
   <whiteboard></whiteboard>
   <recipeSet priority="High">
-    <recipe whiteboard="" role="RECIPE_MEMBERS" ks_meta="" kernel_options=""
-            kernel_options_post="">
+    <recipe whiteboard="" role="RECIPE_MEMBERS" ks_meta="{ksmeta}"
+            kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="ignore"/>
       <packages/>
@@ -109,9 +109,9 @@ def log(message):
     print '[{}] {}'.format(timestamp(), message)
 
 
-def job(host, distro):
+def job(host, distro, ksmeta):
     log('Processing job for host {}'.format(host))
-    return JOB_TEMPLATE.format(host=host, distro=distro)
+    return JOB_TEMPLATE.format(host=host, distro=distro, ksmeta=ksmeta)
 
 
 def job_filename():
@@ -170,10 +170,11 @@ def get_available_distros_as_human_string():
     return ', '.join(DISTRO.keys())
 
 
-def main(distro, attempts):
+def main(distro, attempts, partitions):
     submitted_jobs = 0
 
     distro = validate_distro(distro)
+    ksmeta = "partitions=yes" if partitions else ""
 
     while True:
         machines = find_free()
@@ -192,7 +193,7 @@ def main(distro, attempts):
             if submitted_jobs == attempts:
                 break
 
-            submit_job(job(machine, distro))
+            submit_job(job(machine, distro, ksmeta))
             submitted_jobs += 1
 
         break
@@ -205,6 +206,9 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--attempts', type=int, default=1,
                         help=('How many free machines at most '
                               'should we try to acquire?'))
+    parser.add_argument('-p, --partitions', action='store_true',
+                        dest='partitions', help='Repartition disk',
+                        default=False)
     parser.add_argument('-v, --verbose', action='store_true',
                         dest='verbose', help='verbose')
     args = parser.parse_args()
@@ -213,6 +217,6 @@ if __name__ == '__main__':
     VERBOSE = args.verbose
 
     try:
-        main(args.distro.lower(), args.attempts)
+        main(args.distro.lower(), args.attempts, args.partitions)
     except KeyboardInterrupt:
         log('Aborted.')
