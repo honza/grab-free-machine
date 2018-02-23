@@ -44,6 +44,7 @@ get to the machine fast enough, and someone else has already grabbed it.  When
 you see a status of "In progress" or "Running", you won the lottery.  You
 should then cancel the other jobs.
 """
+from __future__ import print_function
 import sys
 from subprocess import check_output, CalledProcessError
 from datetime import datetime
@@ -106,7 +107,7 @@ def timestamp():
 
 
 def log(message):
-    print '[{}] {}'.format(timestamp(), message)
+    print('[{}] {}'.format(timestamp(), message))
 
 
 def job(host, distro, ksmeta):
@@ -160,7 +161,7 @@ def validate_distro(distro):
     xml = DISTRO.get(distro)
 
     if not xml:
-        print 'Wrong distro. Choices: RHEL or CentOs'
+        log('Wrong distro. Choices: RHEL or CentOs')
         sys.exit(1)
 
     return xml
