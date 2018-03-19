@@ -8,8 +8,8 @@ aren't any machines, the script will wait 30 seconds and try again.
 
 We're looking for a machine:
 
-* 3 or more CPUs
-* 32GB or more of RAM
+* 6 or more CPUs
+* 64GB or more of RAM
 * x86_64
 * 120GB or larger disk
 * not virtualized
