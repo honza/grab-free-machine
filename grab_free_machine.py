@@ -59,6 +59,7 @@ DISTRO = {
     'centos': '<distro_name op="=" value="CentOS-7.4"/>'
 }
 
+SERVER = '<distro_variant op="=" value="Server"/>'
 
 JOB_TEMPLATE = """
 <job retention_tag="scratch">
@@ -75,7 +76,7 @@ JOB_TEMPLATE = """
         <and>
           {distro}
           <distro_arch op="=" value="x86_64"/>
-          <distro_variant op="=" value="Server"/>
+          {server}
         </and>
       </distroRequires>
       <hostRequires force="{host}"/>
@@ -111,9 +112,15 @@ def log(message):
     print('[{}] {}'.format(timestamp(), message))
 
 
-def job(host, distro, ksmeta):
+def job(host, distro, ksmeta, server=''):
     log('Processing job for host {}'.format(host))
-    return JOB_TEMPLATE.format(host=host, distro=distro, ksmeta=ksmeta)
+
+    if distro is not 'centos':
+        server = SERVER
+
+    return JOB_TEMPLATE.format(
+        host=host, distro=distro, ksmeta=ksmeta, server=server
+    )
 
 
 def job_filename():
