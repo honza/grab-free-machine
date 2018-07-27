@@ -112,10 +112,10 @@ def log(message):
     print('[{}] {}'.format(timestamp(), message))
 
 
-def job(host, distro, ksmeta, server=''):
+def job(host, distro, distro_name, ksmeta, server=''):
     log('Processing job for host {}'.format(host))
 
-    if distro is not 'centos':
+    if distro_name != 'centos':
         server = SERVER
 
     return JOB_TEMPLATE.format(
@@ -179,10 +179,10 @@ def get_available_distros_as_human_string():
     return ', '.join(DISTRO.keys())
 
 
-def main(distro, attempts, partitions):
+def main(distro_name, attempts, partitions):
     submitted_jobs = 0
 
-    distro = validate_distro(distro)
+    distro_xml = validate_distro(distro_name)
     ksmeta = "partitions=yes" if partitions else ""
 
     while True:
@@ -202,7 +202,7 @@ def main(distro, attempts, partitions):
             if submitted_jobs == attempts:
                 break
 
-            submit_job(job(machine, distro, ksmeta))
+            submit_job(job(machine, distro_xml, distro_name, ksmeta))
             submitted_jobs += 1
 
         break
