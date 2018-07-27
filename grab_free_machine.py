@@ -205,8 +205,6 @@ def main(distro_name, attempts, partitions):
             submit_job(job(machine, distro_xml, distro_name, ksmeta))
             submitted_jobs += 1
 
-        break
-
 
 if __name__ == '__main__':
     import argparse
