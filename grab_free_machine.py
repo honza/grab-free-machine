@@ -200,7 +200,10 @@ def main(distro_name, attempts, partitions):
                 continue
 
             if submitted_jobs == attempts:
-                break
+                log('Submitted {} jobs, that is enough, exiting...'.format(
+                    submitted_jobs))
+
+                return
 
             submit_job(job(machine, distro_xml, distro_name, ksmeta))
             submitted_jobs += 1
