@@ -39,6 +39,16 @@ optional arguments:
   -v, --verbose         verbose
 ```
 
+## Getting the bkr command on OSX
+
+You can install it by hand from the upstream repository.  It's a simple Python package:
+
+```
+$ git clone https://github.com/beaker-project/beaker
+$ cd beaker/Client
+$ python setup.py install
+```
+
 ## License
 
 GPL-2
