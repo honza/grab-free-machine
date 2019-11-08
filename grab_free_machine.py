@@ -139,7 +139,7 @@ def submit_job(xml):
         log(xml)
 
     try:
-        check_output(['bkr', 'job-submit', filename])
+        check_output(['bkr', 'job-submit', filename], text=True)
     except CalledProcessError:
         log('job submission failed')
 
@@ -159,7 +159,7 @@ def bkr_command():
 def find_free():
     log('Checking for free machines...')
     try:
-        output = check_output(bkr_command())
+        output = check_output(bkr_command(), text=True)
         return output.split('\n')
     except CalledProcessError:
         return
