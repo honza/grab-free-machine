@@ -186,6 +186,11 @@ def main(distro_name, attempts, partitions):
     ksmeta = "partitions=yes" if partitions else ""
 
     while True:
+        if submitted_jobs == attempts:
+            log('Submitted {} jobs, that is enough, exiting...'.format(
+                submitted_jobs))
+            return
+
         machines = find_free()
 
         if not machines:
