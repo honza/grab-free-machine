@@ -22,7 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 Grab a free machine from beaker
 ===============================
 
-Depends on the ``bkr`` command.  Only tested with Python 2.
+Depends on the ``bkr`` command
 
 This script will ask beaker for a list of free machines that match the below
 criteria.  If there are any matching machines, it will request them.  If there

@@ -1,6 +1,6 @@
 # Grab a free machine from beaker
 
-Depends on the `bkr` command.  Works with Python 2 and 3.
+Depends on the `bkr` command.  Requires Python 3.7 or greater.
 
 This script will ask beaker for a list of free machines that match the below
 criteria.  If there are any matching machines, it will request them.  If there
