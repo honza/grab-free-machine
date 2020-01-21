@@ -179,7 +179,7 @@ def get_available_distros_as_human_string():
     return ', '.join(map(lambda x: '"{}"'.format(x), DISTRO.keys()))
 
 
-def main(distro_name, attempts):
+def main(distro_name, attempts, timeout):
     submitted_jobs = 0
 
     distro = validate_distro(distro_name)
@@ -194,7 +194,7 @@ def main(distro_name, attempts):
 
         if not machines:
             log('No machines, sleeping...')
-            sleep(30)
+            sleep(timeout)
             continue
 
         log('Found {} free machines'.format(len(machines)))
@@ -220,6 +220,9 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--attempts', type=int, default=1,
                         help=('How many free machines at most '
                               'should we try to acquire?'))
+    parser.add_argument('-t', '--timeout', type=int, default=30,
+                        help=('How long should we sleep between attempts?'
+                              ' (in seconds)'))
     parser.add_argument('-v, --verbose', action='store_true',
                         dest='verbose', help='verbose')
     args = parser.parse_args()
@@ -228,6 +231,6 @@ if __name__ == '__main__':
     VERBOSE = args.verbose
 
     try:
-        main(args.distro.lower(), args.attempts)
+        main(args.distro.lower(), args.attempts, args.timeout)
     except KeyboardInterrupt:
         log('Aborted.')
