@@ -14,8 +14,7 @@ We're looking for a machine:
 * 120GB or larger disk
 * not virtualized
 
-The recipe will install either RHEL 7.2, RHEL 7.3, RHEL 7.4, RHEL 7.5, or
-CentOS on the newly acquired machine.
+The recipe will install either RHEL 8.1 or CentOS on the newly acquired machine.
 
 You should run this a few times.  In the "My jobs" section of the web UI, you
 will see a bunch of jobs with a status of "Queued".  That means that you didn't
@@ -29,7 +28,7 @@ should then cancel the other jobs.
 usage: grab_free_machine.py [-h] [-a ATTEMPTS] [-v, --verbose] distro
 
 positional arguments:
-  distro                rhel-latest, rhel-72, rhel-73, rhel-74, rhel-75, centos
+  distro                "rhel-81", "centos"
 
 optional arguments:
   -h, --help            show this help message and exit

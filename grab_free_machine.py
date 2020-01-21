@@ -51,15 +51,15 @@ from datetime import datetime
 from time import sleep
 
 DISTRO = {
-    'rhel-72': '<distro_name op="=" value="RHEL-7.2"/>',
-    'rhel-73': '<distro_name op="=" value="RHEL-7.3-20161005.0"/>',
-    'rhel-74': '<distro_name op="=" value="RHEL-7.4-20170711.0"/>',
-    'rhel-75': '<distro_name op="=" value="RHEL-7.5"/>',
-    'rhel-latest': '<distro_name op="=" value="RHEL-7.4-20170711.0"/>',
-    'centos': '<distro_name op="=" value="CentOS-7.6"/>'
+    'rhel-81': {
+        'name': 'RHEL-8.1.0',
+        'variant': 'BaseOS'
+    },
+    'centos': {
+        'name': 'CentOS-7.6',
+        'variant': None
+    }
 }
-
-SERVER = '<distro_variant op="=" value="Server"/>'
 
 JOB_TEMPLATE = """
 <job retention_tag="scratch">
@@ -74,9 +74,9 @@ JOB_TEMPLATE = """
       <repos/>
       <distroRequires>
         <and>
-          {distro}
+          <distro_name op="=" value="{distro}"/>
           <distro_arch op="=" value="x86_64"/>
-          {server}
+          {variant}
         </and>
       </distroRequires>
       <hostRequires force="{host}"/>
@@ -112,14 +112,13 @@ def log(message):
     print('[{}] {}'.format(timestamp(), message))
 
 
-def job(host, distro, distro_name, ksmeta, server=''):
+def job(host, distro, ksmeta):
     log('Processing job for host {}'.format(host))
-
-    if distro_name != 'centos':
-        server = SERVER
-
     return JOB_TEMPLATE.format(
-        host=host, distro=distro, ksmeta=ksmeta, server=server
+        host=host,
+        distro=distro['name'],
+        ksmeta=ksmeta,
+        variant=distro['variant'] or ''
     )
 
 
@@ -166,23 +165,25 @@ def find_free():
 
 
 def validate_distro(distro):
-    xml = DISTRO.get(distro)
+    data = DISTRO.get(distro)
 
-    if not xml:
-        log('Wrong distro. Choices: RHEL or CentOs')
+    if not data:
+        log('Wrong distro. Choices: {}'.format(
+            get_available_distros_as_human_string()
+        ))
         sys.exit(1)
 
-    return xml
+    return data
 
 
 def get_available_distros_as_human_string():
-    return ', '.join(DISTRO.keys())
+    return ', '.join(map(lambda x: '"{}"'.format(x), DISTRO.keys()))
 
 
 def main(distro_name, attempts, partitions):
     submitted_jobs = 0
 
-    distro_xml = validate_distro(distro_name)
+    distro = validate_distro(distro_name)
     ksmeta = "partitions=yes" if partitions else ""
 
     while True:
@@ -210,7 +211,7 @@ def main(distro_name, attempts, partitions):
 
                 return
 
-            submit_job(job(machine, distro_xml, distro_name, ksmeta))
+            submit_job(job(machine, distro, ksmeta))
             submitted_jobs += 1
 
 
